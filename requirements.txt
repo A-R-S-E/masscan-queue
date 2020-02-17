@@ -1,2 +1,2 @@
 pika
-dotenv
+python-dotenv
