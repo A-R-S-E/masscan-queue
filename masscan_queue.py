@@ -16,14 +16,14 @@ connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 channel.queue_declare(queue=os.environ['RABBIT_QUEUE'], durable=True)
 
-res = re.compile(r'(\d+)\/.+ (\d+.\d+.\d+.\d+)')
+res = re.compile(r'(\d+)\/.+ (\d+.\d+.\d+.\d+)') # regex to read the lines from masscan, change if this is to be used with another tool
 
 for line in sys.stdin:
     result = res.search(line)
     if not result:
         continue
-    port = result.group(1)
-    ip = result.group(2)
+    port = result.group(1) # the regex group the port is in
+    ip = result.group(2) # the rgex group the ip is in
     message_dict = {
         'ip': ip,
         'port': int(port)
