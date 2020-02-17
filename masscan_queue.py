@@ -14,7 +14,7 @@ parameters = pika.ConnectionParameters(os.environ['RABBIT_HOST'],
                                        credentials)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
-channel.queue_declare(queue=os.environ['RABBIT_QUEUE'], durable=True)
+channel.queue_declare(queue=os.environ['RABBIT_PORTSCAN_QUEUE'], durable=True)
 
 res = re.compile(r'(\d+)\/.+ (\d+.\d+.\d+.\d+)') # regex to read the lines from masscan, change if this is to be used with another tool
 
@@ -29,6 +29,6 @@ for line in sys.stdin:
         'port': int(port)
     }
     channel.basic_publish(exchange='',
-                      routing_key=os.environ['RABBIT_QUEUE'],
+                      routing_key=os.environ['RABBIT_PORTSCAN_QUEUE'],
                       body=json.dumps(message_dict))
     print('published', message_dict)
